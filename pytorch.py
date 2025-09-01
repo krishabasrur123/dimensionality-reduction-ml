@@ -124,11 +124,78 @@ plt.show()
 
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
 
 
 
 X_train, X_test, Y_train, Y_test, = train_test_split(X_tsne, y, test_size=0.3, random_state=42)
 
-knn = KNeighborsClassifier(n_neighbors=6)
+knn = KNeighborsClassifier(n_neighbors=31,  metric='manhattan')
 
-knn
+knn.fit(X_train,Y_train)
+y_pred = knn.predict(X_test)
+
+
+accuracy = accuracy_score(Y_test, y_pred)
+print("Test set accuracy:", accuracy)
+
+
+from sklearn.metrics import confusion_matrix, classification_report
+cm = confusion_matrix(Y_test, y_pred)
+print("Confusion Matrix:\n", cm)
+
+report = classification_report(Y_test, y_pred)
+
+print("Classification Report:\n", report)
+
+knn = KNeighborsClassifier(n_neighbors=31, metric='minkowski', p=23)
+
+knn.fit(X_train,Y_train)
+y_pred = knn.predict(X_test)
+
+
+accuracy = accuracy_score(Y_test, y_pred)
+print("Test set accuracy:", accuracy)
+
+
+from sklearn.metrics import confusion_matrix, classification_report
+cm = confusion_matrix(Y_test, y_pred)
+print("Confusion Matrix:\n", cm)
+
+report = classification_report(Y_test, y_pred)
+
+print("Classification Report:\n", report)
+
+
+
+knn = KNeighborsClassifier(n_neighbors=31)
+
+knn.fit(X_train,Y_train)
+y_pred = knn.predict(X_test)
+
+
+accuracy = accuracy_score(Y_test, y_pred)
+print("Test set accuracy:", accuracy)
+
+
+from sklearn.metrics import confusion_matrix, classification_report
+cm = confusion_matrix(Y_test, y_pred)
+print("Confusion Matrix:\n", cm)
+
+report = classification_report(Y_test, y_pred)
+
+print("Classification Report:\n", report)
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+plt.figure(figsize=(8,6))
+for label in np.unique(y):
+  idx = np.where(y == label)
+  plt.scatter(X_tsne[idx, 0], X_tsne[idx, 1], label=f'True {int(label)}', alpha=0.6)
+
+plt.title("True Labels on t-SNE 2D embedding")
+plt.xlabel("t-SNE Dimension 1")
+plt.ylabel("t-SNE Dimension 2")
+plt.legend()
+plt.show()
